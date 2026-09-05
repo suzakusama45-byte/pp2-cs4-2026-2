@@ -1,4 +1,4 @@
-function mergeSort(vetor) {
+function mergeSort(vetor, fnComp) {
   //condição de saída
   if (vetor.length < 2) return vetor;
 
@@ -8,8 +8,8 @@ function mergeSort(vetor) {
   let vetDir = vetor.slice(meio);
 
   //chamadas recursivas
-  vetEsq = mergeSort(vetEsq);
-  vetDir = mergeSort(vetDir);
+  vetEsq = mergeSort(vetEsq, fnComp);
+  vetDir = mergeSort(vetDir, fnComp);
 
   //mesclagem ordenada de vetEsq com vetDir
 
@@ -18,7 +18,7 @@ function mergeSort(vetor) {
     vetRes = [];
 
   while (posEsq < vetEsq.length && posDir < vetDir.length) {
-    if (vetEsq[posEsq] < vetDir[posDir]) {
+    if (fnComp(vetDir[posDir], vetEsq[posEsq])) {
       vetRes.push(vetEsq[posEsq]);
       posEsq++;
     } else {
@@ -37,14 +37,11 @@ function mergeSort(vetor) {
   return [...vetRes, ...sobra];
 }
 
-// let nums = [77, 44, 22, 33, 99, 55, 88, 0, 66, 11];
+import { objMotoristas } from "./data/motoristas-obj-desord.mjs";
 
-// let numsOrd = mergeSort(nums)
+let objMotoristasOrd = mergeSort(
+  objMotoristas,
+  (elem1, elem2) => elem1.nome_motorista > elem2.nome_motorista,
+);
 
-// console.log({numsOrd})
-
-import { nomes } from "./data/nomes-desord.mjs";
-
-let nomesOrd = mergeSort(nomes);
-
-console.log(nomesOrd);
+console.log(objMotoristasOrd);
