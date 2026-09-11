@@ -188,23 +188,50 @@ function buscaBinariaRA(vetor, ra, inicio, fim) {
 function relatorioNome() {
   if (alunos.length === 0) {
     console.log("\nNenhum aluno cadastrado!");
+
     return;
   }
 
   let ordenados = bubbleSortNome(alunos);
 
-  console.log("\n===== Alunos Por Nome====");
+  console.log("\n===== ALUNOS POR NOME =====");
 
   for (let i = 0; i < ordenados.length; i++) {
     mostrarAluno(ordenados[i]);
   }
 }
 
+// ==========================================
+// RELATÓRIO POR RA
+// ==========================================
+
+function relatorioRA() {
+  if (alunos.length === 0) {
+    console.log("\nNenhum aluno cadastrado!");
+
+    return;
+  }
+
+  let ordenados = selectionSortRA(alunos);
+
+  console.log("\n===== ALUNOS POR RA =====");
+
+  for (let i = 0; i < ordenados.length; i++) {
+    mostrarAluno(ordenados[i]);
+  }
+}
+
+// =======
+// RELATÓRIO DOS APROVADOS
+// =======
+
 function relatorioAprovados() {
   if (alunos.length === 0) {
     console.log("\nNenhum aluno cadastrado!");
+
     return;
   }
+
   let aprovados = [];
 
   for (let i = 0; i < alunos.length; i++) {
@@ -212,4 +239,119 @@ function relatorioAprovados() {
       aprovados.push(alunos[i]);
     }
   }
+
+  let ordenados = mergeSortNome(aprovados);
+
+  console.log("\n===== APROVADOS POR NOME =====");
+
+  if (ordenados.length === 0) {
+    console.log("Nenhum aluno aprovado.");
+
+    return;
+  }
+
+  for (let i = 0; i < ordenados.length; i++) {
+    mostrarAluno(ordenados[i]);
+  }
 }
+
+// =========
+// MENU
+// =========
+
+let opcao;
+
+do {
+  console.log("\n=======");
+  console.log("       CADASTRO DE ALUNOS");
+  console.log("=========");
+
+  console.log("1 - Cadastrar Alunos");
+  console.log("2 - Relatório por Nome");
+  console.log("3 - Relatório por RA");
+  console.log("4 - Aprovados por Nome");
+  console.log("5 - Busca Sequencial por RA");
+  console.log("6 - Busca Binária por RA");
+  console.log("0 - Sair");
+
+  opcao = Number(prompt("\nDigite uma opção: "));
+
+  switch (opcao) {
+    case 1:
+      cadastrarAlunos();
+      break;
+
+    case 2:
+      relatorioNome();
+      break;
+
+    case 3:
+      relatorioRA();
+      break;
+
+    case 4:
+      relatorioAprovados();
+      break;
+
+    case 5:
+      let raBusca = Number(prompt("Digite o RA: "));
+
+      let alunoEncontrado = buscaSequencialRA(raBusca);
+
+      if (alunoEncontrado !== null) {
+        console.log("\nAluno encontrado:");
+
+        mostrarAluno(alunoEncontrado);
+      } else {
+        console.log("\nAluno não encontrado.");
+      }
+
+      break;
+
+    case 6:
+      let raBinario = Number(prompt("Digite o RA: "));
+
+      // Primeiro ordena por RA crescente
+      let vetorRA = [];
+
+      for (let i = 0; i < alunos.length; i++) {
+        vetorRA.push(alunos[i]);
+      }
+
+      // Ordenação crescente por RA
+      for (let i = 0; i < vetorRA.length - 1; i++) {
+        let menor = i;
+
+        for (let j = i + 1; j < vetorRA.length; j++) {
+          if (vetorRA[j].ra < vetorRA[menor].ra) {
+            menor = j;
+          }
+        }
+
+        let aux = vetorRA[i];
+
+        vetorRA[i] = vetorRA[menor];
+
+        vetorRA[menor] = aux;
+      }
+
+      let posicao = buscaBinariaRA(vetorRA, raBinario, 0, vetorRA.length - 1);
+
+      if (posicao !== -1) {
+        console.log("\nAluno encontrado:");
+
+        mostrarAluno(vetorRA[posicao]);
+      } else {
+        console.log("\nAluno não encontrado.");
+      }
+
+      break;
+
+    case 0:
+      console.log("\nPrograma encerrado!");
+      break;
+
+    default:
+      console.log("\nOpção invalida! ");
+  }
+} while (opcao !== 0);
