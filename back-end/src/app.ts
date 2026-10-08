@@ -1,6 +1,7 @@
 import express, { json, urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import { carRouter } from "./routes/carRouter";
 
 import indexRouter from "./routes/index";
 import customersRouter from "./routes/customers";
@@ -18,4 +19,5 @@ app.use("/", indexRouter);
 
 app.use("/customers", customersRouter);
 
+app.use("/cars", carRouter);
 export default app;
