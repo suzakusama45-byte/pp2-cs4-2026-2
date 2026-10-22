@@ -1,9 +1,12 @@
-import type { Customer } from "../types/Customer";
+import { useState } from "react";
+import type { Customer } from "../assets/types/Customer";
 
 type CustomerListProps = {
   list?: Customer[];
 };
 
 export function CustomersList({ list = [] }: CustomerListProps) {
-  return <p className="text-secondary">Total de clientes: {list.length}</p>;
+  const [customers, setCustomers] = useState([]);
 }
+
+// (...código existente...)
